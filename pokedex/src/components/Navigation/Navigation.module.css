@@ -1,0 +1,28 @@
+.navigation {
+    height: 70px;
+    width: 100%;
+    display: flex;
+    justify-content: space-between; 
+    align-items: center; 
+    margin-bottom: 25px;
+    padding: 0 20px; 
+  }
+  
+  .logoContainer {
+    height: 100%;
+    width: 70px;
+    padding: 25px;
+  }
+  
+  .linkContainer {
+    display: flex;
+    justify-content: flex-end; 
+    align-items: center;
+    width: 50%;
+  }
+  
+  .navLink {
+    padding: 10px 15px;
+    cursor: pointer;
+  }
+  

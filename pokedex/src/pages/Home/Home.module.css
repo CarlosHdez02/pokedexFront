@@ -1,0 +1,27 @@
+
+.pokemons{
+    list-style: none;
+    margin:0;
+    padding:0;
+
+    display:grid;
+    width:100%;
+    grid-template-columns: repeat(auto-fit,minmax(200px,1fr));
+    gap:16px;
+}
+.pokemon{
+    text-align: center;
+    padding-bottom:0;
+}
+.pokemon h3, .pokemon p{
+    padding:0;
+}
+.pokemon img{
+    border-radius:8px;
+    margin-top:16px;
+}
+.imageContainer{
+    width:150px;
+    height:150px;
+    background-color: bisque;
+}
