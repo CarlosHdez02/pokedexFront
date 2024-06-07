@@ -7,8 +7,8 @@ import logo from '../../assets/logo.svg';
 const navLinks: NavigationInterface[] = [
   {
     id: 1,
-    path: "/pokemon",
-    name: "Pokemons", // Add a name property for display
+    path: "/",
+    name: "Home", // Add a name property for display
   },
   {
     id: 2,
@@ -17,9 +17,10 @@ const navLinks: NavigationInterface[] = [
   },
   {
     id:3,
-    path:"/",
-    name:"Home",
+    path:"/pokemon",
+    name:"Pokemon",
   }
+ 
 ];
 
 const Navigation = () => {

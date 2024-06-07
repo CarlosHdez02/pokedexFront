@@ -3,6 +3,7 @@ import dummyData from "../../data/dummyData.json";
 import React from "react";
 import { CSVLink } from "react-csv";
 import classes from "./TrainersTable.module.css";
+import Modal from "../Modal/Modal";
 
 //CSV columns
 const columns = [
@@ -14,6 +15,8 @@ const columns = [
 ];
 
 const TrainersTable = () => {
+  const [openModal, setOpenModal] = React.useState<boolean>(false);
+
   //Optimization hook
   const data = React.useMemo(() => dummyData, []);
 
@@ -33,7 +36,11 @@ const TrainersTable = () => {
   ];
   return (
     <>
-      <button className={classes.AddTrainerButton}>Add Trainer</button>
+      <button
+        className={classes.AddTrainerButton}
+        onClick={() => setOpenModal(true)} >Add Trainer</button>
+      {openModal && <Modal closeModal={() => setOpenModal(false)} />}
+      
       <button className={classes.DeleteTrainerButton}>Delete Trainer</button>
       <button className={classes.EditTrainerButton}>Edit Trainer</button>
 

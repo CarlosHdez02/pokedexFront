@@ -1,6 +1,6 @@
 import React from "react";
 import { pokemonInterface } from "../interfaces/PokemonInterface";
-import Pagination from "../components/Pagination/Pagination";
+//import Pagination from "../components/Pagination/Pagination";
 export const useFetch = () => {
   const [pokemons, setPokemons] = React.useState<pokemonInterface[]>([]);
   const [loading, setLoading] = React.useState<boolean>(false);
@@ -12,7 +12,7 @@ export const useFetch = () => {
       setLoading(true);
       try {
         const response = await fetch(
-          "https://pokeapi.co/api/v2/pokemon?limit=130"
+          "https://pokeapi.co/api/v2/pokemon?limit=200"
         );
         const data = await response.json();
         
