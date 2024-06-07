@@ -1,5 +1,4 @@
 import { Routes, Route } from "react-router-dom";
-import Form from './components/Form/Form'
 
 import PokemonsPage from "./pages/pokemons/Pokemons";
 import TrainersPage from "./pages/trainers/Trainers";

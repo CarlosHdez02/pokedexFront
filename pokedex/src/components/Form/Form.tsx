@@ -1,7 +1,6 @@
 import React, { FormEvent, useState, ChangeEvent } from "react";
 import { TrainerInterface } from "../../interfaces/TrainerInterface";
 import { Button } from "../Button/Button";
-import { useAddTrainer } from "../../hooks/useAddTrainer";
 import classes from './Form.module.css'
 
 const Form: React.FC = () => {
@@ -44,11 +43,12 @@ const Form: React.FC = () => {
   console.log(trainer);
 
   return (
-    <div className="form-container">
+    <div className={classes.formContainer}>
       <form onSubmit={handleSubmit}>
         <div>
-          <label htmlFor="name">Name:</label>
+          <label className={classes.label} htmlFor="name">Name:</label>
           <input
+            className={classes.myInput}
             type="text"
             id="name"
             name="name"
@@ -59,8 +59,9 @@ const Form: React.FC = () => {
           />
         </div>
         <div>
-          <label htmlFor="lastName">Last Name:</label>
+          <label className={classes.label}htmlFor="lastName">Last Name:</label>
           <input
+            className={classes.myInput}
             type="text"
             id="lastName"
             name="lastName"
@@ -71,8 +72,9 @@ const Form: React.FC = () => {
           />
         </div>
         <div>
-          <label htmlFor="phoneNumber">Phone Number:</label>
+          <label className={classes.label} htmlFor="phoneNumber">Phone Number:</label>
           <input
+            className={classes.myInput}
             type="number"
             id="phoneNumber"
             name="phoneNumber"
@@ -83,8 +85,9 @@ const Form: React.FC = () => {
           />
         </div>
         <div>
-          <label htmlFor="medals">Medals:</label>
+          <label className={classes.label} htmlFor="medals">Medals:</label>
           <input
+            className={classes.myInput}
             type="number"
             id="medals"
             name="medals"

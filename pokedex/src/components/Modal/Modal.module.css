@@ -19,6 +19,7 @@
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     padding: 20px;
     z-index: 10000; /* Ensure the modal appears above other content */
+    padding-bottom: 12rem;
   }
   .titleCloseButton {
     display: flex;
