@@ -1,4 +1,5 @@
 import { useTable } from "react-table";
+import { useDeleteTrainer } from "../../hooks/useDeleteTrainer";
 import dummyData from "../../data/dummyData.json";
 import React from "react";
 import { CSVLink } from "react-csv";
@@ -6,8 +7,17 @@ import classes from "./TrainersTable.module.css";
 import Modal from "../Modal/Modal";
 
 const TrainersTable = () => {
-  const [openModal, setOpenModal] = React.useState<boolean>(false);
+  const [data, setData] = React.useState(dummyData)
 
+  const [openModal, setOpenModal] = React.useState<boolean>(false);
+  const { deleteTrainer } = useDeleteTrainer(setData);
+
+  //Use callback memorizes the function so it doesnt repeat
+  const handleDelete = React.useCallback((id: number) => {
+    deleteTrainer(id);
+  }, [deleteTrainer]);
+
+  //Use memo memorizes de value
   const columns = React.useMemo(
     () => [
       { Header: "ID", accessor: "id" },
@@ -35,10 +45,9 @@ const TrainersTable = () => {
         ),
       },
     ],
-    []
+    [handleDelete, setOpenModal]
   );
 
-  const data = React.useMemo(() => dummyData, []);
 
   const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
     useTable({ columns, data });
@@ -53,11 +62,6 @@ const TrainersTable = () => {
       medals,
     ]),
   ];
-
-  const handleDelete = (id: number) => {
-    console.log(`Delete trainer with id: ${id}`);
-    // Implement the delete functionality here
-  };
 
   return (
     <>

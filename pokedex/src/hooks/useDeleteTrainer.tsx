@@ -1,15 +1,18 @@
 import React from "react";
 import { TrainerInterface } from "../interfaces/TrainerInterface";
-export const useDeleteTrainer = ()=>{
-    const [trainers, setTrainers] = React.useState<TrainerInterface[]>()
-
-    React.useEffect(()=>{
-        const deleteTrainer = async(trainerId:number)=>{
-            setTrainers(trainers?.filter(trainer=> trainer.id !== trainerId)
-        )
-        }
-    },[])
-    return{
-        trainers
-    }
-}
+export const useDeleteTrainer = (setData:any) => {
+  
+    const deleteTrainer = React.useCallback((id: number) => {
+      console.log("Deleting trainer with id:", id);
+      setData((prevTrainers:any) => {
+        return prevTrainers.filter((trainer:any) => trainer.id !== id);
+      });
+    }, []);
+  
+  
+    return {
+      //trainers,
+      deleteTrainer,
+    };
+  };
+  

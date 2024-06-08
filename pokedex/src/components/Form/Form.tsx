@@ -16,7 +16,7 @@ const Form: React.FC = () => {
     e.preventDefault();
     
     console.log(trainer);
-    // Optionally handle the submission (e.g., send the data to a server)
+    //Sending it back to the server
 
     // Reset the form with a new unique id
     setTrainer({

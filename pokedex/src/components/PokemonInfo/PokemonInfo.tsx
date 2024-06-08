@@ -20,7 +20,7 @@ const PokemonInfo: React.FC = () => {
   }
 
   // Find pokemon by id
-  const pokemon = pokemons.find((p: pokemonInterface) => p.id === Number(id));
+  const pokemon = pokemons.find((pokemon: pokemonInterface) => pokemon.id === Number(id));
 
   if (!pokemon) {
     return <div>Pokemon not found</div>;
@@ -33,7 +33,7 @@ const PokemonInfo: React.FC = () => {
         <img src={pokemon.sprites.front_default} alt={pokemon.name} />
       </div>
       <div className={classes.pokemonSkills}>
-        <h3>Skills</h3>
+        <h3>Abilities</h3>
         <ul>
           {pokemon.abilities.map((ability) => (
             <li key={ability.ability.name}>{ability.ability.name}</li>
