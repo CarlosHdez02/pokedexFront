@@ -3,6 +3,8 @@ import { useFetch } from "../../hooks/useFetchApi";
 import classes from "./Home.module.css";
 import Pagination from "../../components/Pagination/Pagination";
 import { Link } from "react-router-dom";
+import Loader from "../../UI/Loader/Loader";
+
 
 const Home = () => {
   const [currentPage, setCurrentPage] = React.useState<number>(1);
@@ -10,7 +12,7 @@ const Home = () => {
   const { pokemons, loading, error } = useFetch();
 
   if (loading) {
-    return <div>Loading pokemons...</div>;
+    return <Loader/>
   }
   if (error) {
     return `Error: ${error}`;
@@ -27,10 +29,11 @@ const Home = () => {
 
   return (
     <>
+    <h3 style={{marginBottom:'0.2rem'}}>Click on a pokemon to access pokemon's Info!</h3>
       <ul className={classes.pokemons}>
         {currentPokemons.map((pokemon) => (
           <li key={pokemon.id} className={classes.pokemon}>
-            <Link to="/pokemon">
+            <Link to={`/pokemon/${pokemon.id}`}>
               <img
                 className={classes.imageContainer}
                 src={pokemon.sprites.front_default}

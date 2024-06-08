@@ -15,12 +15,7 @@ const navLinks: NavigationInterface[] = [
     path: "/trainers",
     name: "Trainers", // Add a name property for display
   },
-  {
-    id:3,
-    path:"/pokemon",
-    name:"Pokemon",
-  }
- 
+  
 ];
 
 const Navigation = () => {
@@ -30,6 +25,7 @@ const Navigation = () => {
         <Link className={classes.logoContainer} to="/">
           <img src={logo} alt="Pokemon logo" />
         </Link>
+       
 
         <ul className={classes.linkContainer}>
           {navLinks.map((link) => (

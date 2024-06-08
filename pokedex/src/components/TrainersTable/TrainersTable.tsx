@@ -5,25 +5,44 @@ import { CSVLink } from "react-csv";
 import classes from "./TrainersTable.module.css";
 import Modal from "../Modal/Modal";
 
-//CSV columns
-const columns = [
-  { Header: "ID", accessor: "id" },
-  { Header: "First Name", accessor: "name" },
-  { Header: "Last Name", accessor: "lastname" },
-  { Header: "Phone Number", accessor: "phonenumber" },
-  { Header: "Medals", accessor: "medals" },
-];
-
 const TrainersTable = () => {
   const [openModal, setOpenModal] = React.useState<boolean>(false);
 
-  //Optimization hook
+  const columns = React.useMemo(
+    () => [
+      { Header: "ID", accessor: "id" },
+      { Header: "First Name", accessor: "name" },
+      { Header: "Last Name", accessor: "lastname" },
+      { Header: "Phone Number", accessor: "phonenumber" },
+      { Header: "Medals", accessor: "medals" },
+      {
+        Header: "Actions",
+        Cell: ({ row }: { row: any }) => (
+          <div className={classes.actionsContainer}>
+            <button
+              className={classes.DeleteTrainerButton}
+              onClick={() => handleDelete(row.original.id)}
+            >
+              Delete
+            </button>
+            <button
+              className={classes.EditTrainerButton}
+              onClick={() => setOpenModal(true)}
+            >
+              Update
+            </button>
+          </div>
+        ),
+      },
+    ],
+    []
+  );
+
   const data = React.useMemo(() => dummyData, []);
 
-  //React table hook
   const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
     useTable({ columns, data });
-  //Column headers and table data for csv
+
   const csvData = [
     ["ID", "Name", "Last Name", "Phone Number", "Medals"],
     ...data.map(({ id, name, lastname, phonenumber, medals }) => [
@@ -34,17 +53,21 @@ const TrainersTable = () => {
       medals,
     ]),
   ];
+
+  const handleDelete = (id: number) => {
+    console.log(`Delete trainer with id: ${id}`);
+    // Implement the delete functionality here
+  };
+
   return (
     <>
-      <button
-        className={classes.AddTrainerButton}
-        onClick={() => setOpenModal(true)} >Add Trainer</button>
-      {openModal && <Modal closeModal={() => setOpenModal(false)} />}
-      
-      <button className={classes.DeleteTrainerButton}>Delete Trainer</button>
-      <button className={classes.EditTrainerButton}>Edit Trainer</button>
-
-      <div className={classes.table}>
+      <div className={classes.actions}>
+        <button
+          className={classes.AddTrainerButton}
+          onClick={() => setOpenModal(true)}
+        >
+          Add Trainer
+        </button>
         <CSVLink
           className={classes.downloadbutton}
           filename="trainers.csv"
@@ -52,7 +75,12 @@ const TrainersTable = () => {
         >
           Export to CSV
         </CSVLink>
-        <table {...getTableProps()}>
+      </div>
+
+      {openModal && <Modal closeModal={() => setOpenModal(false)} />}
+
+      <div className={classes.tableContainer}>
+        <table {...getTableProps()} className={classes.table}>
           <thead>
             {headerGroups.map((headerGroup) => (
               <tr {...headerGroup.getHeaderGroupProps()}>
@@ -81,4 +109,5 @@ const TrainersTable = () => {
     </>
   );
 };
+
 export default TrainersTable;

@@ -8,15 +8,13 @@ const Form: React.FC = () => {
     id: Date.now(), // Assign a unique id based on the current timestamp
     name: "",
     lastName: "",
-    phoneNumber: 0,
+    phoneNumber: '',
     medals: 0,
   });
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (trainer.name.length < 5 && trainer.lastName.length < 5) {
-      return ``;
-    }
+    
     console.log(trainer);
     // Optionally handle the submission (e.g., send the data to a server)
 
@@ -25,7 +23,7 @@ const Form: React.FC = () => {
       id: Date.now(),
       name: "",
       lastName: "",
-      phoneNumber: 0,
+      phoneNumber: '',
       medals: 0,
     });
   };
@@ -36,7 +34,7 @@ const Form: React.FC = () => {
     setTrainer({
       ...trainer,
       [name]:
-        name === "phoneNumber" || name === "medals" ? Number(value) : value,
+       name === "medals" ? Number(value) : value,
     });
   };
 
@@ -56,6 +54,7 @@ const Form: React.FC = () => {
             onChange={handleInputChange}
             required
             autoComplete="off"
+            minLength={5}
           />
         </div>
         <div>
@@ -69,19 +68,21 @@ const Form: React.FC = () => {
             onChange={handleInputChange}
             required
             autoComplete="off"
+            minLength={4}
           />
         </div>
         <div>
           <label className={classes.label} htmlFor="phoneNumber">Phone Number:</label>
           <input
             className={classes.myInput}
-            type="number"
+            type="text"
             id="phoneNumber"
             name="phoneNumber"
             value={trainer.phoneNumber}
             onChange={handleInputChange}
             required
             autoComplete="off"
+            minLength={10}
           />
         </div>
         <div>
@@ -95,6 +96,7 @@ const Form: React.FC = () => {
             onChange={handleInputChange}
             required
             autoComplete="off"
+            min={0}
           />
         </div>
         <Button type="submit">Submit</Button>{" "}

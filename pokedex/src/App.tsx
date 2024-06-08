@@ -6,6 +6,7 @@ import TrainersPage from "./pages/trainers/Trainers";
 import "./App.css";
 import Navigation from "./components/Navigation/Navigation";
 import Home from "./pages/Home/Home";
+import PokemonInfo from "./components/PokemonInfo/PokemonInfo";
 
 function App() {
   return (
@@ -13,7 +14,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Navigation />}>
           <Route path="/" element={<Home/>}/>
-          <Route path="/pokemon" element={<PokemonsPage />} />
+          <Route path="/pokemon/:id" element={<PokemonInfo/>}/>
           <Route path="/trainers" element={<TrainersPage />} />
         </Route>
       </Routes>

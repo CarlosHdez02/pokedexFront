@@ -21,7 +21,7 @@ const Modal = ({ closeModal }: ModalProps) => {
           <button onClick={closeModal}>X</button>
         </div>
         <div className={classes.title}>
-          <h1>Add a new trainer</h1>
+          <h1>Enter your Poke trainer</h1>
         </div>
         <div className={classes.body}>
           <Form />

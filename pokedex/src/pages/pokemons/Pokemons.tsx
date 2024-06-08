@@ -1,6 +1,6 @@
 import React from "react";
 import { PDFDownloadLink, PDFViewer } from "@react-pdf/renderer";
-import PDF from "../../components/PDF/PDF";
+import PokemonPDF from "../../components/PDF/PokemonPdf";
 import classes from './Pokemons.module.css'
 
 const PokemonsPage = () => {
