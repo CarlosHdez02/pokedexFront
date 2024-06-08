@@ -1,6 +1,4 @@
 import { Routes, Route } from "react-router-dom";
-
-import PokemonsPage from "./pages/pokemons/Pokemons";
 import TrainersPage from "./pages/trainers/Trainers";
 
 import "./App.css";

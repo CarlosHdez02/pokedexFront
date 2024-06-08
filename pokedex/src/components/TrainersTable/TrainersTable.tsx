@@ -1,29 +1,34 @@
 import { useTable } from "react-table";
 import { useDeleteTrainer } from "../../hooks/useDeleteTrainer";
-import dummyData from "../../data/dummyData.json";
 import React from "react";
 import { CSVLink } from "react-csv";
 import classes from "./TrainersTable.module.css";
 import Modal from "../Modal/Modal";
+import useFetchTrainers from "../../hooks/useFetchTrainers";
+import Loader from "../../UI/Loader/Loader";
+import { TrainerInterface } from "../../interfaces/TrainerInterface";
 
 const TrainersTable = () => {
-  const [data, setData] = React.useState(dummyData)
+  const { trainers, loading, error } = useFetchTrainers();
+  const [data, setData] = React.useState<TrainerInterface[]>(trainers);
+
+  React.useEffect(() => {
+    setData(trainers);
+  }, [trainers]);
 
   const [openModal, setOpenModal] = React.useState<boolean>(false);
   const { deleteTrainer } = useDeleteTrainer(setData);
 
-  //Use callback memorizes the function so it doesnt repeat
   const handleDelete = React.useCallback((id: number) => {
     deleteTrainer(id);
   }, [deleteTrainer]);
 
-  //Use memo memorizes de value
   const columns = React.useMemo(
     () => [
       { Header: "ID", accessor: "id" },
-      { Header: "First Name", accessor: "name" },
-      { Header: "Last Name", accessor: "lastname" },
-      { Header: "Phone Number", accessor: "phonenumber" },
+      { Header: "First Name", accessor: "firstName" },
+      { Header: "Last Name", accessor: "lastName" },
+      { Header: "Phone Number", accessor: "phoneNumber" },
       { Header: "Medals", accessor: "medals" },
       {
         Header: "Actions",
@@ -45,23 +50,28 @@ const TrainersTable = () => {
         ),
       },
     ],
-    [handleDelete, setOpenModal]
+    [handleDelete]
   );
 
-
-  const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
-    useTable({ columns, data });
+  const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } = useTable({ columns, data });
 
   const csvData = [
-    ["ID", "Name", "Last Name", "Phone Number", "Medals"],
-    ...data.map(({ id, name, lastname, phonenumber, medals }) => [
+    ["ID", "First Name", "Last Name", "Phone Number", "Medals"],
+    ...data.map(({ id, name, lastName, phoneNumber, medals }) => [
       id,
       name,
-      lastname,
-      phonenumber,
+      lastName,
+      phoneNumber,
       medals,
     ]),
   ];
+
+  if (loading) {
+    return <Loader />;
+  }
+  if (error) {
+    return <div>Error: {error instanceof Error ? error.message : 'Unknown error'}</div>;
+  }
 
   return (
     <>
