@@ -16,9 +16,7 @@ The installed dependencies were:
   -React Table: npm install react-table react-csv
 
 There is also a deployed version of this project in:
-https://pokedex-front-rof8z76u6-carlos-projects-36ff0679.vercel.app/
-
-
+https://pokedex-front-virid.vercel.app/
 
 
 
