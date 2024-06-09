@@ -1,8 +1,9 @@
 import React from "react";
 import { TrainerInterface } from "../interfaces/TrainerInterface";
 
-const useFetchTrainers = () => {
-  const [trainers, setTrainers] = React.useState<TrainerInterface[]>([]);
+const useFetchTrainers = (
+  setData: React.Dispatch<React.SetStateAction<TrainerInterface[]>>
+) => {
   const [loading, setLoading] = React.useState<boolean>(false);
   const [error, setError] = React.useState<unknown | undefined>();
 
@@ -10,12 +11,12 @@ const useFetchTrainers = () => {
     const fetchTrainers = async () => {
       setLoading(true);
       try {
-        const response = await fetch('http://localhost:3000/api/trainers/');
+        const response = await fetch("http://localhost:3000/api/trainers/");
         if (!response.ok) {
-          throw new Error('Failed to fetch trainers');
+          throw new Error("Failed to fetch trainers");
         }
         const data = await response.json();
-        setTrainers(data);
+        setData(data);
       } catch (err: unknown) {
         setError(err);
       } finally {
@@ -26,9 +27,8 @@ const useFetchTrainers = () => {
   }, []);
 
   return {
-    trainers,
     loading,
-    error
+    error,
   };
 };
 

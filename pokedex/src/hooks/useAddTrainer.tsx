@@ -1,7 +1,12 @@
 import React from "react";
 import { TrainerInterface } from "../interfaces/TrainerInterface";
+import { TrainerService } from "../services/Pokemon.service";
 
-export const useAddTrainer = () => {
+export const useAddTrainer = (
+  setData: (value: React.SetStateAction<TrainerInterface[]>) => void,
+  localTrainer: TrainerInterface
+) => {
+  const trainerService = new TrainerService();
   const addTrainer = React.useCallback(
     async (
       body: Pick<
@@ -9,20 +14,10 @@ export const useAddTrainer = () => {
         "firstName" | "lastName" | "medals" | "phoneNumber"
       >
     ) => {
-      try {
-        const response = await fetch("http://localhost:3000/api/trainers/", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(body),
-        });
-        const data = await response.json();
-        if (!response.ok) {
-          throw new Error("Failed to fetch trainers");
-        }
-        return data._id;
-      } catch (err: unknown) {}
+      const id = await trainerService.create(body);
+      setData((prevData) => [...prevData, { ...localTrainer, _id: id }]);
     },
-    []
+    [setData, localTrainer]
   );
 
   return {

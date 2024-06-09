@@ -1,22 +1,28 @@
 import React from "react";
 import { TrainerInterface } from "../interfaces/TrainerInterface";
-export const useEditTrainer = () => {
-  const handleUpdate = React.useCallback(async (body: TrainerInterface, id: string) => {
-    try {
-      const response = await fetch(`http://localhost:3000/api/trainers/${id}`, {
-        body: JSON.stringify(body),
-        headers: { "Content-Type": "application/json" },
-        method: "PUT",
+import { TrainerService } from "../services/Pokemon.service";
+export const useEditTrainer = (
+  setData: (value: React.SetStateAction<TrainerInterface[]>) => void,
+  trainer: TrainerInterface | undefined,
+  localTrainer: TrainerInterface
+) => {
+  const trainerService = new TrainerService();
+  const handleUpdate = React.useCallback(
+    async (body: TrainerInterface, _id: string) => {
+      await trainerService.update(_id, body);
+      setData((prevData) => {
+        const updatedData = prevData.map((el) => {
+          if (el._id === trainer?._id) {
+            return localTrainer;
+          }
+          return el;
+        });
+        return updatedData;
       });
-      if (!response.ok) {
-        throw new Error("Failed to fetch trainers");
-      }
-      const data = await response.json();
-      return data;
-    } catch (err: unknown) {
-    } finally {
-    }
-  }, []);
+    },
+    [trainer, localTrainer, setData]
+  );
+
   return {
     handleUpdate,
   };

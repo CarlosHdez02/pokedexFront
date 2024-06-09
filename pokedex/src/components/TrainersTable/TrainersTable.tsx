@@ -9,12 +9,9 @@ import Loader from "../../UI/Loader/Loader";
 import { TrainerInterface } from "../../interfaces/TrainerInterface";
 
 const TrainersTable = () => {
-  const { trainers, loading, error } = useFetchTrainers();
-  const [data, setData] = React.useState<TrainerInterface[]>(trainers);
+  const [data, setData] = React.useState<TrainerInterface[]>([]);
+  const { loading, error } = useFetchTrainers(setData);
 
-  React.useEffect(() => {
-    setData(trainers);
-  }, [trainers]);
 
   const [openModal, setOpenModal] = React.useState<{
     open: boolean;
@@ -88,7 +85,7 @@ const TrainersTable = () => {
       </div>
     );
   }
-
+  
   return (
     <>
       <div className={classes.actions}>
@@ -115,7 +112,7 @@ const TrainersTable = () => {
       {openModal.open && (
         <Modal
           setData={setData}
-          trainer={trainers.find((el) => el._id === openModal.id)}
+          trainer={data.find((el) => el._id === openModal.id)}
           closeModal={() =>
             setOpenModal({
               open: false,

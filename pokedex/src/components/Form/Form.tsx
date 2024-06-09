@@ -15,8 +15,6 @@ const Form: React.FC<FormProps> = ({
   closeModal,
   setData,
 }: FormProps) => {
-  const { handleUpdate } = useEditTrainer();
-  const { addTrainer } = useAddTrainer();
   const [localTrainer, setLocalTrainer] = useState<TrainerInterface>(
     trainer ?? {
       firstName: "",
@@ -26,39 +24,24 @@ const Form: React.FC<FormProps> = ({
       _id: "",
     }
   );
+  const { handleUpdate } = useEditTrainer(setData, trainer, localTrainer);
+  const { addTrainer } = useAddTrainer(setData, localTrainer);
 
-  console.log(localTrainer);
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
-    console.log(e, "this vluer");
     e.preventDefault();
 
-    console.log(trainer);
-
     if (trainer) {
-      try {
-        //Sending it back to the server
-        await handleUpdate(localTrainer, trainer._id);
-        setData((prevData) => {
-          const updatedData = prevData.map((el) => {
-            if (el._id === trainer._id) {
-              return localTrainer;
-            }
-            return el;
-          });
-          return updatedData;
-        });
-        // Reset the form with a new unique id
-        closeModal();
-      } catch (error) {}
-      return;
+      await handleUpdate(localTrainer, trainer._id);
+      return closeModal();
     }
 
-    try {
-      const {_id, ...rest} = localTrainer
-      const id = await addTrainer(rest);
-      setData((prevData) => [...prevData, {...localTrainer, _id: id}]);
-      closeModal()
-    } catch (error) {}
+    await addTrainer({
+      firstName: localTrainer.firstName,
+      lastName: localTrainer.lastName,
+      medals: localTrainer.medals,
+      phoneNumber: localTrainer.phoneNumber,
+    });
+    return closeModal();
   };
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -70,7 +53,6 @@ const Form: React.FC<FormProps> = ({
     });
   };
 
-  console.log(localTrainer.firstName);
 
   return (
     <div className={classes.formContainer}>

@@ -5,3 +5,6 @@ export interface TrainerInterface{
     phoneNumber:string ;
     medals:number ;
 }
+
+export type TrainerInterfaceCreate = Pick<TrainerInterface, 'firstName' | 'lastName' | 'medals' | 'phoneNumber'>
+ 
