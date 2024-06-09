@@ -1,7 +1,7 @@
 import { TrainerInterface, TrainerInterfaceCreate } from '../interfaces/TrainerInterface';
 
 export class TrainerService {
-    private baseUrl = 'http://localhost:3000/api/';
+    private baseUrl = 'https://pokedexback.onrender.com/api/';
 
     constructor() { }
 
@@ -33,7 +33,9 @@ export class TrainerService {
 
     public async get() {
         try {
-            this.errorHandler(await this.requestHandler('GET', 'trainers'))
+            const response = this.errorHandler(await this.requestHandler('GET', 'trainers'))
+            const data = await response.json();
+            return data;
         } catch (error) {
             throw error;
         }

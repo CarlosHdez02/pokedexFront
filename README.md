@@ -1,30 +1,25 @@
-# React + TypeScript + Vite
+Hi, this is the README for the frontend side
+To build this app i used vite, i created the app like this:
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+npm create vite@latest app
+And then i chose
+  -React
+  - TypesSript
 
-Currently, two official plugins are available:
+when you launch it, it should open on localhost:5173 the port may vary in case you have another application running on that port.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+You have to do npm install to get the node_modules and be able to run the app
 
-## Expanding the ESLint configuration
+The installed dependencies were:
+  -React Router DOM: npm install react router-dom@6
+  -React csv : npm install react-csv --save;
+  -React Table: npm install react-table react-csv
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+There is also a deployed version of this project in:
+https://pokedex-front-rof8z76u6-carlos-projects-36ff0679.vercel.app/
 
-- Configure the top-level `parserOptions` property like this:
 
-```js
-export default {
-  // other rules...
-  parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-  },
-}
-```
 
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+
+
+

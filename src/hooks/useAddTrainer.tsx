@@ -1,26 +1,32 @@
 import React from "react";
-import { TrainerInterface } from "../interfaces/TrainerInterface";
-import { TrainerService } from "../services/Pokemon.service";
+import {
+  TrainerInterface,
+  TrainerInterfaceCreate,
+} from "../interfaces/TrainerInterface";
+import { TrainerService } from "../services/Trainer.service";
 
 export const useAddTrainer = (
   setData: (value: React.SetStateAction<TrainerInterface[]>) => void,
-  localTrainer: TrainerInterface
+  localTrainer: TrainerInterface,
+  closeModal: () => void
 ) => {
+  const [error, setError] = React.useState(false);
   const trainerService = new TrainerService();
   const addTrainer = React.useCallback(
-    async (
-      body: Pick<
-        TrainerInterface,
-        "firstName" | "lastName" | "medals" | "phoneNumber"
-      >
-    ) => {
-      const id = await trainerService.create(body);
-      setData((prevData) => [...prevData, { ...localTrainer, _id: id }]);
+    async (body: TrainerInterfaceCreate) => {
+      try {
+        const id = await trainerService.create(body);
+        setData((prevData) => [...prevData, { ...localTrainer, _id: id }]);
+        closeModal()
+      } catch (error) {
+        setError(true);
+      }
     },
     [setData, localTrainer]
   );
 
   return {
+    error,
     addTrainer,
   };
 };

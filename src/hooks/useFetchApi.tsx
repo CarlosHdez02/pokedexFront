@@ -10,17 +10,19 @@ export const useFetch = () => {
     const fetchPokemons = async () => {
       setLoading(true);
       try {
-        const response = await fetch('http://localhost:3000/api/pokemons');
+        const response = await fetch(
+          "https://pokedexback.onrender.com/api/pokemons"
+        );
         if (!response.ok) {
-          throw new Error('Failed to fetch pokemons');
+          throw new Error("Failed to fetch pokemons");
         }
         const data = await response.json();
         setPokemons(data);
-        setLoading(false)
+        setLoading(false);
       } catch (err: unknown) {
         setLoading(false);
         setError(err);
-      } 
+      }
     };
 
     fetchPokemons();

@@ -24,24 +24,31 @@ const Form: React.FC<FormProps> = ({
       _id: "",
     }
   );
-  const { handleUpdate } = useEditTrainer(setData, trainer, localTrainer);
-  const { addTrainer } = useAddTrainer(setData, localTrainer);
+  const { handleUpdate, error: updateError } = useEditTrainer(
+    setData,
+    trainer,
+    localTrainer,
+    closeModal
+  );
+  const { addTrainer, error: createError } = useAddTrainer(
+    setData,
+    localTrainer,
+    closeModal
+  );
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     if (trainer) {
-      await handleUpdate(localTrainer, trainer._id);
-      return closeModal();
+      return await handleUpdate(localTrainer, trainer._id);
     }
 
-    await addTrainer({
+    return await addTrainer({
       firstName: localTrainer.firstName,
       lastName: localTrainer.lastName,
       medals: localTrainer.medals,
       phoneNumber: localTrainer.phoneNumber,
     });
-    return closeModal();
   };
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -52,7 +59,6 @@ const Form: React.FC<FormProps> = ({
       [name]: name === "medals" ? Number(value) : value,
     });
   };
-
 
   return (
     <div className={classes.formContainer}>
@@ -122,6 +128,8 @@ const Form: React.FC<FormProps> = ({
           />
         </div>
         <Button type="submit">Submit</Button>{" "}
+        {createError && <p>Couldn't create trainer</p>}
+        {updateError && <p>Couldn't update trainer</p>}
         {/* Use custom Button component */}
       </form>
     </div>

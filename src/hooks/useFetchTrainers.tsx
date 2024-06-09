@@ -1,9 +1,11 @@
 import React from "react";
 import { TrainerInterface } from "../interfaces/TrainerInterface";
+import { TrainerService } from "../services/Trainer.service";
 
 const useFetchTrainers = (
   setData: React.Dispatch<React.SetStateAction<TrainerInterface[]>>
 ) => {
+  const trainerService = new TrainerService();
   const [loading, setLoading] = React.useState<boolean>(false);
   const [error, setError] = React.useState<unknown | undefined>();
 
@@ -11,11 +13,7 @@ const useFetchTrainers = (
     const fetchTrainers = async () => {
       setLoading(true);
       try {
-        const response = await fetch("http://localhost:3000/api/trainers/");
-        if (!response.ok) {
-          throw new Error("Failed to fetch trainers");
-        }
-        const data = await response.json();
+        const data = await trainerService.get();
         setData(data);
       } catch (err: unknown) {
         setError(err);
