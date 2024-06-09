@@ -1,56 +1,90 @@
 import React, { FormEvent, useState, ChangeEvent } from "react";
 import { TrainerInterface } from "../../interfaces/TrainerInterface";
 import { Button } from "../Button/Button";
-import classes from './Form.module.css'
+import classes from "./Form.module.css";
+import { useEditTrainer } from "../../hooks/useEditTrainer";
+import { useAddTrainer } from "../../hooks/useAddTrainer";
 
-const Form: React.FC = () => {
-  const [trainer, setTrainer] = useState<TrainerInterface>({
-    id: Date.now(), // Assign a unique id based on the current timestamp
-    name: "",
-    lastName: "",
-    phoneNumber: '',
-    medals: 0,
-  });
-
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    
-    console.log(trainer);
-    //Sending it back to the server
-
-    // Reset the form with a new unique id
-    setTrainer({
-      id: Date.now(),
-      name: "",
+type FormProps = {
+  trainer: TrainerInterface | undefined;
+  closeModal: () => void;
+  setData: React.Dispatch<React.SetStateAction<TrainerInterface[]>>;
+};
+const Form: React.FC<FormProps> = ({
+  trainer,
+  closeModal,
+  setData,
+}: FormProps) => {
+  const { handleUpdate } = useEditTrainer();
+  const { addTrainer } = useAddTrainer();
+  const [localTrainer, setLocalTrainer] = useState<TrainerInterface>(
+    trainer ?? {
+      firstName: "",
       lastName: "",
-      phoneNumber: '',
       medals: 0,
-    });
+      phoneNumber: "",
+      _id: "",
+    }
+  );
+
+  console.log(localTrainer);
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+    console.log(e, "this vluer");
+    e.preventDefault();
+
+    console.log(trainer);
+
+    if (trainer) {
+      try {
+        //Sending it back to the server
+        await handleUpdate(localTrainer, trainer._id);
+        setData((prevData) => {
+          const updatedData = prevData.map((el) => {
+            if (el._id === trainer._id) {
+              return localTrainer;
+            }
+            return el;
+          });
+          return updatedData;
+        });
+        // Reset the form with a new unique id
+        closeModal();
+      } catch (error) {}
+      return;
+    }
+
+    try {
+      const {_id, ...rest} = localTrainer
+      const id = await addTrainer(rest);
+      setData((prevData) => [...prevData, {...localTrainer, _id: id}]);
+      closeModal()
+    } catch (error) {}
   };
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
 
-    setTrainer({
-      ...trainer,
-      [name]:
-       name === "medals" ? Number(value) : value,
+    setLocalTrainer({
+      ...localTrainer,
+      [name]: name === "medals" ? Number(value) : value,
     });
   };
 
-  console.log(trainer);
+  console.log(localTrainer.firstName);
 
   return (
     <div className={classes.formContainer}>
       <form onSubmit={handleSubmit}>
         <div>
-          <label className={classes.label} htmlFor="name">Name:</label>
+          <label className={classes.label} htmlFor="name">
+            Name:
+          </label>
           <input
             className={classes.myInput}
             type="text"
-            id="name"
-            name="name"
-            value={trainer.name}
+            id="firstName"
+            name="firstName"
+            value={localTrainer.firstName}
             onChange={handleInputChange}
             required
             autoComplete="off"
@@ -58,13 +92,15 @@ const Form: React.FC = () => {
           />
         </div>
         <div>
-          <label className={classes.label}htmlFor="lastName">Last Name:</label>
+          <label className={classes.label} htmlFor="lastName">
+            Last Name:
+          </label>
           <input
             className={classes.myInput}
             type="text"
             id="lastName"
             name="lastName"
-            value={trainer.lastName}
+            value={localTrainer.lastName}
             onChange={handleInputChange}
             required
             autoComplete="off"
@@ -72,13 +108,15 @@ const Form: React.FC = () => {
           />
         </div>
         <div>
-          <label className={classes.label} htmlFor="phoneNumber">Phone Number:</label>
+          <label className={classes.label} htmlFor="phoneNumber">
+            Phone Number:
+          </label>
           <input
             className={classes.myInput}
             type="text"
             id="phoneNumber"
             name="phoneNumber"
-            value={trainer.phoneNumber}
+            value={localTrainer.phoneNumber}
             onChange={handleInputChange}
             required
             autoComplete="off"
@@ -86,13 +124,15 @@ const Form: React.FC = () => {
           />
         </div>
         <div>
-          <label className={classes.label} htmlFor="medals">Medals:</label>
+          <label className={classes.label} htmlFor="medals">
+            Medals:
+          </label>
           <input
             className={classes.myInput}
             type="number"
             id="medals"
             name="medals"
-            value={trainer.medals}
+            value={localTrainer.medals}
             onChange={handleInputChange}
             required
             autoComplete="off"

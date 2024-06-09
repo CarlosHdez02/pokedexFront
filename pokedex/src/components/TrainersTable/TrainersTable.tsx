@@ -16,16 +16,22 @@ const TrainersTable = () => {
     setData(trainers);
   }, [trainers]);
 
-  const [openModal, setOpenModal] = React.useState<boolean>(false);
+  const [openModal, setOpenModal] = React.useState<{
+    open: boolean;
+    id: string;
+  }>({ open: false, id: "" });
   const { deleteTrainer } = useDeleteTrainer(setData);
 
-  const handleDelete = React.useCallback((id: number) => {
-    deleteTrainer(id);
-  }, [deleteTrainer]);
+  const handleDelete = React.useCallback(
+    (_id: string) => {
+      deleteTrainer(_id);
+    },
+    [deleteTrainer]
+  );
 
   const columns = React.useMemo(
     () => [
-      { Header: "ID", accessor: "id" },
+      { Header: "ID", accessor: "_id" },
       { Header: "First Name", accessor: "firstName" },
       { Header: "Last Name", accessor: "lastName" },
       { Header: "Phone Number", accessor: "phoneNumber" },
@@ -36,13 +42,18 @@ const TrainersTable = () => {
           <div className={classes.actionsContainer}>
             <button
               className={classes.DeleteTrainerButton}
-              onClick={() => handleDelete(row.original.id)}
+              onClick={() => handleDelete(row.original._id)}
             >
               Delete
             </button>
             <button
               className={classes.EditTrainerButton}
-              onClick={() => setOpenModal(true)}
+              onClick={() =>
+                setOpenModal({
+                  open: true,
+                  id: row.original._id,
+                })
+              }
             >
               Update
             </button>
@@ -53,13 +64,14 @@ const TrainersTable = () => {
     [handleDelete]
   );
 
-  const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } = useTable({ columns, data });
+  const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
+    useTable({ columns, data });
 
   const csvData = [
     ["ID", "First Name", "Last Name", "Phone Number", "Medals"],
-    ...data.map(({ id, name, lastName, phoneNumber, medals }) => [
-      id,
-      name,
+    ...data.map(({ _id, firstName, lastName, phoneNumber, medals }) => [
+      _id,
+      firstName,
       lastName,
       phoneNumber,
       medals,
@@ -70,7 +82,11 @@ const TrainersTable = () => {
     return <Loader />;
   }
   if (error) {
-    return <div>Error: {error instanceof Error ? error.message : 'Unknown error'}</div>;
+    return (
+      <div>
+        Error: {error instanceof Error ? error.message : "Unknown error"}
+      </div>
+    );
   }
 
   return (
@@ -78,7 +94,12 @@ const TrainersTable = () => {
       <div className={classes.actions}>
         <button
           className={classes.AddTrainerButton}
-          onClick={() => setOpenModal(true)}
+          onClick={() =>
+            setOpenModal({
+              open: true,
+              id: "",
+            })
+          }
         >
           Add Trainer
         </button>
@@ -91,15 +112,26 @@ const TrainersTable = () => {
         </CSVLink>
       </div>
 
-      {openModal && <Modal closeModal={() => setOpenModal(false)} />}
+      {openModal.open && (
+        <Modal
+          setData={setData}
+          trainer={trainers.find((el) => el._id === openModal.id)}
+          closeModal={() =>
+            setOpenModal({
+              open: false,
+              id: "",
+            })
+          }
+        />
+      )}
 
       <div className={classes.tableContainer}>
         <table {...getTableProps()} className={classes.table}>
           <thead>
-            {headerGroups.map((headerGroup) => (
-              <tr {...headerGroup.getHeaderGroupProps()}>
-                {headerGroup.headers.map((column) => (
-                  <th {...column.getHeaderProps()}>
+            {headerGroups.map((headerGroup, index) => (
+              <tr {...headerGroup.getHeaderGroupProps()} key={index}>
+                {headerGroup.headers.map((column, columnIndex) => (
+                  <th {...column.getHeaderProps()} key={columnIndex}>
                     {column.render("Header")}
                   </th>
                 ))}
@@ -107,12 +139,14 @@ const TrainersTable = () => {
             ))}
           </thead>
           <tbody {...getTableBodyProps()}>
-            {rows.map((row) => {
+            {rows.map((row, rowIndex) => {
               prepareRow(row);
               return (
-                <tr {...row.getRowProps()}>
-                  {row.cells.map((cell) => (
-                    <td {...cell.getCellProps()}>{cell.render("Cell")}</td>
+                <tr {...row.getRowProps()} key={rowIndex}>
+                  {row.cells.map((cell, cellIndex) => (
+                    <td {...cell.getCellProps()} key={cellIndex}>
+                      {cell.render("Cell")}
+                    </td>
                   ))}
                 </tr>
               );
