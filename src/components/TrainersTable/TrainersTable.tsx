@@ -26,7 +26,7 @@ const TrainersTable = () => {
     [deleteTrainer]
   );
 
-  const columns = React.useMemo(
+  const columns:any = React.useMemo(
     () => [
       { Header: "ID", accessor: "_id" },
       { Header: "First Name", accessor: "firstName" },
