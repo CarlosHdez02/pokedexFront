@@ -33,7 +33,7 @@ const Home = () => {
       <ul className={classes.pokemons}>
         {currentPokemons.map((pokemon) => (
           <li key={pokemon.id} className={classes.pokemon}>
-            <Link to={`/pokemon/${pokemon.id}`}>
+            <Link to={`/pokemon/${pokemon.id}${window.location.search}`}>
               <img
                 className={classes.imageContainer}
                 src={pokemon.sprites.front_default}
